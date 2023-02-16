@@ -5,8 +5,11 @@ import com.phuc.pcoreservice.repository.IGmailRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Persistent;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
 
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
@@ -29,45 +32,31 @@ public class GmailRepoImpl implements IGmailRepo {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    //    @PersistenceContext
+//
+//    @PersistenceContext
 //    private EntityManager entityManager;
-    @Autowired
-    private DataSource dataSource;
+
+//    @Autowired
+//    private JdbcTemplate jdbcTemplate;
 
     @Override
     @Transactional
     public InfoGmailDTO getGmail() {
         InfoGmailDTO result = new InfoGmailDTO();
-//        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("sp_get_gmail");
-//        query.registerStoredProcedureParameter("p_uuid", String.class, ParameterMode.OUT);
-//        query.registerStoredProcedureParameter("p_user_gmail", String.class, ParameterMode.OUT);
-//        query.registerStoredProcedureParameter("p_password_gmail", String.class, ParameterMode.OUT);
-//        query.registerStoredProcedureParameter("p_email_recovery", String.class, ParameterMode.OUT);
-//        query.execute();
-//
-//
-//        result.setUuid((String) query.getOutputParameterValue("p_uuid"));
-//        result.setUsername((String) query.getOutputParameterValue("p_user_gmail"));
-//        result.setPassword((String) query.getOutputParameterValue("p_password_gmail"));
-//        result.setEmailRecovery((String) query.getOutputParameterValue("p_email_recovery"));
 
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource)
-//                .withProcedureName("sp_get_gmail")
-//                .declareParameters(new SqlOutParameter("p_uuid", Types.VARCHAR))
-//                .declareParameters(new SqlOutParameter("p_user_gmail", Types.VARCHAR))
-//                .declareParameters(new SqlOutParameter("p_password_gmail", Types.VARCHAR))
-//                .declareParameters(new SqlOutParameter("p_email_recovery", Types.VARCHAR));
-//
-//
-//
-//        Map<String, Object> outParams = jdbcCall.execute();
-//        result.setUuid((String) outParams.get("p_uuid"));
-//        result.setUsername((String) outParams.get("p_user_gmail"));
-//        result.setPassword((String) outParams.get("p_password_gmail"));
-//        result.setEmailRecovery((String) outParams.get("p_email_recovery"));
-        String sql = "CALL sp_get_gmail(@p_uuid, @p_user_gmail, @p_password_gmail, @p_email_recovery)";
-//        namedParameterJdbcTemplate
+        String sqlQuery = "SELECT tdg.id as id, tdg.user_gmail as user_gmail, tdg.password_gmail as password_gmail, tdg.email_recovery as email_recovery " +
+                "FROM tbl_data_gmail tdg where tdg.status = 1 LIMIT 1 for update";
+        namedParameterJdbcTemplate.query(sqlQuery, rs -> {
+            int id = rs.getInt("id");
+            String username = rs.getString("user_gmail");
+            MapSqlParameterSource params = new MapSqlParameterSource();
+            params.addValue("id", id);
+            namedParameterJdbcTemplate.update("UPDATE tbl_data_gmail set status = 2 where id = :id", params);
+            result.setUuid(id + username.substring(0, username.indexOf("@")));
+            result.setUsername(username);
+            result.setPassword(rs.getString("password_gmail"));
+            result.setEmailRecovery(rs.getString("email_recovery"));
+        });
         return result;
     }
 }
