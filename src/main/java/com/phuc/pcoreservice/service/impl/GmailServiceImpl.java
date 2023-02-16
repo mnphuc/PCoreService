@@ -21,6 +21,6 @@ public class GmailServiceImpl implements IGmailService {
         if (StringUtils.isBlank(result.getUuid())){
             return ResponseEntity.badRequest().body("Gmail empty!");
         }
-        return ResponseEntity.ok().body(gmailRepo.getGmail());
+        return ResponseEntity.ok().body(result);
     }
 }

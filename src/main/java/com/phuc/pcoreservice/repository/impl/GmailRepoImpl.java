@@ -52,6 +52,7 @@ public class GmailRepoImpl implements IGmailRepo {
             MapSqlParameterSource params = new MapSqlParameterSource();
             params.addValue("id", id);
             namedParameterJdbcTemplate.update("UPDATE tbl_data_gmail set status = 2 where id = :id", params);
+            result.setId(id);
             result.setUuid(id + username.substring(0, username.indexOf("@")));
             result.setUsername(username);
             result.setPassword(rs.getString("password_gmail"));

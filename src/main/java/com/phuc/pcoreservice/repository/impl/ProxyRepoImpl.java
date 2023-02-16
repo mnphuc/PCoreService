@@ -30,6 +30,7 @@ public class ProxyRepoImpl implements IProxyRepo {
             namedParameterJdbcTemplate.update("UPDATE tbl_data_proxy set status = 2 where id = :id", params);
             String proxy = rs.getString("proxy");
             String[] arrProxy = proxy.split(":");
+            result.setId(id);
             result.setIp(arrProxy[0] + ":" + arrProxy[1]);
             result.setUsername(arrProxy[2]);
             result.setPassword(arrProxy[3]);
