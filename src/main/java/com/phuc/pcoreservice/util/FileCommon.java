@@ -2,6 +2,7 @@ package com.phuc.pcoreservice.util;
 
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -10,8 +11,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import org.springframework.core.io.Resource;
 
 public class FileCommon {
+
+    private Path foundFile;
 
     private static final String  DEFAULT_PATH = "file";
     public static String saveFile(MultipartFile multipartFile) {
@@ -33,4 +37,22 @@ public class FileCommon {
         }
         return result;
     }
+
+    public Resource getFileAsResource(String fileCode) throws IOException {
+        Path dirPath = Paths.get("fileprofile");
+
+        Files.list(dirPath).forEach(file -> {
+            if (file.getFileName().toString().startsWith(fileCode)) {
+                foundFile = file;
+                return;
+            }
+        });
+
+        if (foundFile != null) {
+            return new UrlResource(foundFile.toUri());
+        }
+
+        return null;
+    }
+
 }
