@@ -1,7 +1,9 @@
 package com.phuc.pcoreservice.controller;
 
 
+import com.phuc.pcoreservice.service.IFileService;
 import com.phuc.pcoreservice.util.FileCommon;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,27 +18,11 @@ import java.io.IOException;
 @RestController
 public class FileController {
 
-    @GetMapping("/downloadFile/{fileCode}")
+    @Autowired
+    private IFileService fileService;
+
+    @GetMapping("/download-file/{fileCode}")
     public ResponseEntity<?> downloadFile(@PathVariable("fileCode") String fileCode) {
-        FileCommon downloadUtil = new FileCommon();
-
-        Resource resource = null;
-        try {
-            resource = downloadUtil.getFileAsResource(fileCode);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-        if (resource == null) {
-            return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
-        }
-
-        String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
-                .body(resource);
+        return fileService.downloadFile(fileCode);
     }
 }

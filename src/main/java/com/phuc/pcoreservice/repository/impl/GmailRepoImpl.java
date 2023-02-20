@@ -1,5 +1,8 @@
 package com.phuc.pcoreservice.repository.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.phuc.pcoreservice.dto.GmailDTO;
 import com.phuc.pcoreservice.dto.InfoGmailDTO;
 import com.phuc.pcoreservice.repository.IGmailRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +25,7 @@ import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class GmailRepoImpl implements IGmailRepo {
@@ -57,6 +57,28 @@ public class GmailRepoImpl implements IGmailRepo {
             result.setUsername(username);
             result.setPassword(rs.getString("password_gmail"));
             result.setEmailRecovery(rs.getString("email_recovery"));
+        });
+        return result;
+    }
+
+    @Override
+    public List<String> getListGmailByVps(String ipAddress) {
+        List<String> result = new ArrayList<>();
+        String sql = "SELECT g.id, g.username, g.password, g.mail_recovery FROM tbl_gmail g inner join tbl_vps_info v on g.vps_use = v.id where v.ip_address = :ip_address and g.status = 1";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("ip_address", ipAddress);
+        ObjectMapper objectMapper = new ObjectMapper();
+        namedParameterJdbcTemplate.query(sql, params, rs -> {
+            GmailDTO gmailDTO = new GmailDTO();
+            gmailDTO.setId(rs.getInt("id"));
+            gmailDTO.setUsername(rs.getString("username"));
+            gmailDTO.setPassword(rs.getString("password"));
+            gmailDTO.setMailRecovery(rs.getString("mail_recovery"));
+            try {
+                result.add(objectMapper.writeValueAsString(gmailDTO));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         });
         return result;
     }

@@ -39,7 +39,7 @@ public class FileCommon {
     }
 
     public Resource getFileAsResource(String fileCode) throws IOException {
-        Path dirPath = Paths.get("fileprofile");
+        Path dirPath = Paths.get(DEFAULT_PATH);
 
         Files.list(dirPath).forEach(file -> {
             if (file.getFileName().toString().startsWith(fileCode)) {

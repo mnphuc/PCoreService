@@ -7,6 +7,8 @@ import org.springframework.data.relational.core.sql.In;
 @Data
 public class ProfileInfoDTO {
 
+    private Integer id;
+
     @Property(name = "data_gmail_id")
     private Integer gmailId;
 
