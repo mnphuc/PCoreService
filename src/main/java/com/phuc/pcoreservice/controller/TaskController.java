@@ -3,6 +3,7 @@ package com.phuc.pcoreservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phuc.pcoreservice.dto.InfoGmailDTO;
+import com.phuc.pcoreservice.request.ConfigRunningVPSRequest;
 import com.phuc.pcoreservice.request.FingerprintRequest;
 import com.phuc.pcoreservice.request.ProfileRequest;
 import com.phuc.pcoreservice.service.IGmailService;
@@ -96,6 +97,11 @@ public class TaskController {
         return proxyService.getStringProxyV6(request);
     }
 
+
+    @PostMapping(value = "config-start-vps")
+    public ResponseEntity<?> configRunningVPS(@RequestBody ConfigRunningVPSRequest request){
+        return null;
+    }
 
 
 }
