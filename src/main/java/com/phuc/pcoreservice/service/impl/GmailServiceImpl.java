@@ -37,4 +37,10 @@ public class GmailServiceImpl implements IGmailService {
         }
         return ResponseEntity.ok().body(StringUtils.join(result, "\n"));
     }
+
+    @Override
+    public ResponseEntity<?> updateStatusLogin(Integer gmailId) {
+        gmailRepo.updateStatusLoginGmail(gmailId);
+        return ResponseEntity.ok().body("cập nhật gmail thành công");
+    }
 }

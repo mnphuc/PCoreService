@@ -8,4 +8,6 @@ public interface IGmailService {
     ResponseEntity<?> getGmailCreateProfile();
 
     ResponseEntity<?> getGmailByVps(HttpServletRequest request);
+
+    ResponseEntity<?> updateStatusLogin(Integer gmailId);
 }

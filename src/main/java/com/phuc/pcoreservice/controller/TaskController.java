@@ -97,6 +97,11 @@ public class TaskController {
         return proxyService.getStringProxyV6(request);
     }
 
+    @GetMapping(value = "update-status-gmail/{id}")
+    public ResponseEntity<?> updateStatusGmail(@PathVariable("id")Integer gmailId) {
+        return gmailService.updateStatusLogin(gmailId);
+    }
+
 
     @PostMapping(value = "config-start-vps")
     public ResponseEntity<?> configRunningVPS(@RequestBody ConfigRunningVPSRequest request){

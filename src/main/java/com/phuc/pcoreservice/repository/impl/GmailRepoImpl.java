@@ -82,4 +82,24 @@ public class GmailRepoImpl implements IGmailRepo {
         });
         return result;
     }
+
+    @Override
+    @Transactional
+    public boolean updateStatusLoginGmail(Integer gmailId) {
+        String sql = "SELECT id, login_count_fall FROM tbl_gmail tg where id = :id FOR UPDATE";
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("id", gmailId);
+        namedParameterJdbcTemplate.query(sql, parameterSource, rs -> {
+            Integer countFall = rs.getInt("login_count_fall");
+            String sqlUpdate = "";
+            if (countFall > 1){
+                sqlUpdate = "update tbl_gmail set login_count_fall = login_count_fall + 1 where id = :id";
+            }else {
+                sqlUpdate = "update tbl_gmail set login_count_fall = login_count_fall + 1, status = 2 where id = :id";
+            }
+            MapSqlParameterSource paramUpdate = new MapSqlParameterSource();
+            namedParameterJdbcTemplate.update(sqlUpdate, paramUpdate);
+        });
+        return true;
+    }
 }

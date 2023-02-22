@@ -11,4 +11,6 @@ public interface IGmailRepo {
 
     List<String> getListGmailByVps(String ipAddress);
 
+    boolean updateStatusLoginGmail(Integer gmailId);
+
 }
