@@ -3,12 +3,12 @@ package com.phuc.pcoreservice.repository.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phuc.pcoreservice.dto.ProxyDTO;
+import com.phuc.pcoreservice.model.ProxyModel;
 import com.phuc.pcoreservice.repository.IProxyRepo;
-import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -63,5 +63,21 @@ public class ProxyRepoImpl implements IProxyRepo {
             }
         });
         return result;
+    }
+
+    @Override
+    @Transactional
+    public Boolean importProxy(List<ProxyModel> list) {
+        List<SqlParameterSource> sourceList = new ArrayList<>();
+        String sql = "INSERT INTO tbl_proxy (proxy) VALUES(:proxy)";
+        list.forEach(p -> {
+            MapSqlParameterSource source = new MapSqlParameterSource();
+            source.addValue("proxy", p.getProxy());
+            sourceList.add(source);
+        });
+
+        SqlParameterSource[] sqlParameterSources = sourceList.toArray(new SqlParameterSource[0]);
+        namedParameterJdbcTemplate.batchUpdate(sql, sqlParameterSources);
+        return true;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phuc.pcoreservice.dto.GmailDTO;
 import com.phuc.pcoreservice.dto.InfoGmailDTO;
+import com.phuc.pcoreservice.model.GmailModel;
 import com.phuc.pcoreservice.repository.IGmailRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Persistent;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
@@ -100,6 +102,24 @@ public class GmailRepoImpl implements IGmailRepo {
             MapSqlParameterSource paramUpdate = new MapSqlParameterSource();
             namedParameterJdbcTemplate.update(sqlUpdate, paramUpdate);
         });
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean importGmail(List<GmailModel> list) {
+        List<SqlParameterSource> sourceList = new ArrayList<>();
+        String sql = "INSERT INTO tbl_gmail (username, password, mail_recovery) VALUES(:username, :password, :mail_recovery)";
+        list.forEach(p -> {
+            MapSqlParameterSource source = new MapSqlParameterSource();
+            source.addValue("username", p.getUsername());
+            source.addValue("password", p.getPassword());
+            source.addValue("mail_recovery", p.getMailRecovery());
+            sourceList.add(source);
+        });
+
+        SqlParameterSource[] sqlParameterSources = sourceList.toArray(new SqlParameterSource[0]);
+        namedParameterJdbcTemplate.batchUpdate(sql, sqlParameterSources);
         return true;
     }
 }

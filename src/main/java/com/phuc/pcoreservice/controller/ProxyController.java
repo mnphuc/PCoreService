@@ -1,0 +1,22 @@
+package com.phuc.pcoreservice.controller;
+
+import com.phuc.pcoreservice.service.IProxyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+@RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping(value = "proxy")
+public class ProxyController {
+
+    @Autowired
+    private IProxyService proxyService;
+
+    @PostMapping(value = "/import-proxy", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> importProxy(@RequestParam("file") MultipartFile file){
+        return proxyService.importProxy(file);
+    }
+
+}

@@ -6,10 +6,7 @@ import com.phuc.pcoreservice.dto.InfoGmailDTO;
 import com.phuc.pcoreservice.request.ConfigRunningVPSRequest;
 import com.phuc.pcoreservice.request.FingerprintRequest;
 import com.phuc.pcoreservice.request.ProfileRequest;
-import com.phuc.pcoreservice.service.IGmailService;
-import com.phuc.pcoreservice.service.IProfileService;
-import com.phuc.pcoreservice.service.IProxyService;
-import com.phuc.pcoreservice.service.IWebsiteService;
+import com.phuc.pcoreservice.service.*;
 import com.phuc.pcoreservice.util.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/task")
+@CrossOrigin(origins = "*")
 public class TaskController {
 
     @Value("${application.header-ip-candidates}")
@@ -40,6 +38,10 @@ public class TaskController {
     private IProfileService profileService;
     @Autowired
     private IWebsiteService websiteService;
+
+    @Autowired
+    private ITaskService taskService;
+
     @GetMapping("/get-gmail")
     public ResponseEntity<?> getGmail(){
         return gmailService.getGmailCreateProfile();
@@ -105,7 +107,7 @@ public class TaskController {
 
     @PostMapping(value = "config-start-vps")
     public ResponseEntity<?> configRunningVPS(@RequestBody ConfigRunningVPSRequest request){
-        return null;
+        return taskService.configVPSRunning(request);
     }
 
 
