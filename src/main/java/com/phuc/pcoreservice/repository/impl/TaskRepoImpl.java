@@ -42,6 +42,11 @@ public class TaskRepoImpl implements ITaskRepo {
         String sqlUpdateProxy = "update tbl_proxy set vps_use = :vpsID where vps_use is null limit :limit";
         int statusUpdateGmail = namedParameterJdbcTemplate.update(sqlUpdateProxy, parameterUpdateProxy);
 
+        String sqlInsertWebsiteUse = "INSERT INTO tbl_vps_use_website (id_vps, id_website) values (:id_vps, :id_website)";
+        MapSqlParameterSource parameterWebsite = new MapSqlParameterSource();
+        parameterWebsite.addValue("id_vps", vpsId);
+        parameterWebsite.addValue("id_website", 1);
+        int statusInsertWebsite = namedParameterJdbcTemplate.update(sqlInsertWebsiteUse, parameterWebsite);
         return true;
     }
 }
