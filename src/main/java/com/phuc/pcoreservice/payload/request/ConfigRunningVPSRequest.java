@@ -1,7 +1,5 @@
-package com.phuc.pcoreservice.request;
+package com.phuc.pcoreservice.payload.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 
 import java.util.List;

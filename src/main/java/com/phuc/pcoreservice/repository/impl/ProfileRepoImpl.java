@@ -1,14 +1,18 @@
 package com.phuc.pcoreservice.repository.impl;
 
+import com.phuc.pcoreservice.dto.FingerprintDTO;
 import com.phuc.pcoreservice.repository.IProfileRepo;
-import com.phuc.pcoreservice.request.ProfileRequest;
-import com.phuc.pcoreservice.response.ProfileTask;
+import com.phuc.pcoreservice.payload.request.ProfileRequest;
+import com.phuc.pcoreservice.payload.response.ProfileTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class ProfileRepoImpl implements IProfileRepo {
@@ -40,10 +44,11 @@ public class ProfileRepoImpl implements IProfileRepo {
     }
 
     @Override
-    public boolean saveFingerprint(String value) {
-        String sql = "INSERT into tbl_fingerprints_data(data_fingerprint) values (:data_fingerprint)";
+    public boolean saveFingerprint(String value, String type) {
+        String sql = "insert into tbl_fingerprint (value, type ) values (:value, :type)";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("data_fingerprint", value);
+        params.addValue("value", value);
+        params.addValue("type", type);
         int saveStatus = namedParameterJdbcTemplate.update(sql, params);
         return saveStatus == 1;
     }
@@ -65,5 +70,27 @@ public class ProfileRepoImpl implements IProfileRepo {
             result.setName(rs.getString("profile_name"));
         });
         return result;
+    }
+
+    @Override
+    @Transactional
+    public void saveFingerprintList(List<FingerprintDTO> list) {
+        String sql = "INSERT INTO tbl_fingerprint (file, type, import_date) values (:file, :type, now())";
+        List<SqlParameterSource> sourceList = new ArrayList<>();
+        list.forEach(item -> {
+            MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+            parameterSource.addValue("file", item.getPathFile());
+            parameterSource.addValue("type", item.getType());
+            sourceList.add(parameterSource);
+        });
+
+        SqlParameterSource[] sqlParameterSources = sourceList.toArray(new SqlParameterSource[0]);
+        namedParameterJdbcTemplate.batchUpdate(sql, sqlParameterSources);
+    }
+
+    @Override
+    public FingerprintDTO getFingerprint() {
+        String sql = "SELECT id, file, type FROM tbl_fingerprint where status_use = 0 ORDER BY RAND() limit 1 FOR UPDATE";
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 package com.phuc.pcoreservice.controller;
 
-import com.phuc.pcoreservice.request.PhotoRequest;
+import com.phuc.pcoreservice.payload.request.PhotoRequest;
 import com.phuc.pcoreservice.service.INotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

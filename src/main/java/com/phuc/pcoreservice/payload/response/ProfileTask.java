@@ -1,4 +1,4 @@
-package com.phuc.pcoreservice.response;
+package com.phuc.pcoreservice.payload.response;
 
 import lombok.Data;
 

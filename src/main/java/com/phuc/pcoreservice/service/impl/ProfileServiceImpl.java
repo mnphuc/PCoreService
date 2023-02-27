@@ -1,8 +1,9 @@
 package com.phuc.pcoreservice.service.impl;
 
+import com.phuc.pcoreservice.dto.FingerprintDTO;
 import com.phuc.pcoreservice.repository.IProfileRepo;
-import com.phuc.pcoreservice.request.ProfileRequest;
-import com.phuc.pcoreservice.response.ProfileTask;
+import com.phuc.pcoreservice.payload.request.ProfileRequest;
+import com.phuc.pcoreservice.payload.response.ProfileTask;
 import com.phuc.pcoreservice.service.IProfileService;
 import com.phuc.pcoreservice.util.FileCommon;
 import com.phuc.pcoreservice.util.HttpUtils;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 public class ProfileServiceImpl implements IProfileService {
@@ -20,7 +22,7 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public ResponseEntity<?> saveProfile(ProfileRequest request) {
-        FileCommon.saveFile(request.getFile());
+        FileCommon.saveFileProfile(request.getFile());
         Boolean bl = profileRepo.saveProfileInfo(request);
         if (bl){
             return ResponseEntity.ok().body("Save profile success!");
@@ -31,8 +33,8 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<?> saveFingerprint(String value) {
-        Boolean bl = profileRepo.saveFingerprint(value);
+    public ResponseEntity<?> saveFingerprint(String value, String type) {
+        Boolean bl = profileRepo.saveFingerprint(value, type);
         if (bl){
             return ResponseEntity.ok().body("save fingerprint success!");
         }else {
@@ -60,5 +62,16 @@ public class ProfileServiceImpl implements IProfileService {
         }else{
             return ResponseEntity.badRequest().body("Update status running fall!");
         }
+    }
+
+    @Override
+    public void saveFingerprint(List<FingerprintDTO> list) {
+        profileRepo.saveFingerprintList(list);
+    }
+
+    @Override
+    public ResponseEntity<?> getFingerprint() {
+        profileRepo.get
+        return null;
     }
 }
