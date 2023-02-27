@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class FingerprintDTO {
-    private String pathFile;
+
+    private Integer id;
+    private String file;
     private String type;
 }

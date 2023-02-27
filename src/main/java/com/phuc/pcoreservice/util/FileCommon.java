@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,6 +53,15 @@ public class FileCommon {
 
 
         return file.getPath();
+    }
+
+    public static Resource getFingerprintFile(String fileName){
+        Path dirPath = Paths.get(fileName);
+        try {
+            return new UrlResource(dirPath.toUri());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Resource getFileAsResource(String fileCode) throws IOException {

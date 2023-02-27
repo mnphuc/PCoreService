@@ -29,7 +29,8 @@ public class FingerprintController {
 
     @GetMapping(value = "get")
     public ResponseEntity<?> getFingerprint(){
-        return null;
+
+        return profileService.getFingerprint();
     }
 
 }

@@ -5,13 +5,18 @@ import com.phuc.pcoreservice.repository.IProfileRepo;
 import com.phuc.pcoreservice.payload.request.ProfileRequest;
 import com.phuc.pcoreservice.payload.response.ProfileTask;
 import com.phuc.pcoreservice.service.IProfileService;
+import com.phuc.pcoreservice.util.CommonUtil;
 import com.phuc.pcoreservice.util.FileCommon;
 import com.phuc.pcoreservice.util.HttpUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -71,7 +76,14 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public ResponseEntity<?> getFingerprint() {
-        profileRepo.get
-        return null;
+        FingerprintDTO fingerprintDTO = profileRepo.getFingerprint();
+        Resource resource = FileCommon.getFingerprintFile(fingerprintDTO.getFile());
+        String jsonResult = null;
+        try {
+            jsonResult = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok().body(jsonResult);
     }
 }

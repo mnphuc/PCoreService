@@ -79,7 +79,7 @@ public class ProfileRepoImpl implements IProfileRepo {
         List<SqlParameterSource> sourceList = new ArrayList<>();
         list.forEach(item -> {
             MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-            parameterSource.addValue("file", item.getPathFile());
+            parameterSource.addValue("file", item.getFile());
             parameterSource.addValue("type", item.getType());
             sourceList.add(parameterSource);
         });
@@ -90,7 +90,18 @@ public class ProfileRepoImpl implements IProfileRepo {
 
     @Override
     public FingerprintDTO getFingerprint() {
+        FingerprintDTO result = new FingerprintDTO();
         String sql = "SELECT id, file, type FROM tbl_fingerprint where status_use = 0 ORDER BY RAND() limit 1 FOR UPDATE";
-        return null;
+        namedParameterJdbcTemplate.query(sql, rs -> {
+            Integer id = rs.getInt("id");
+            result.setId(id);
+            result.setFile(rs.getString("file"));
+            result.setType(rs.getString("type"));
+            String sqlUpdate = "UPDATE tbl_fingerprint set status_use = 1 where id = :id";
+            MapSqlParameterSource  parameterSource = new MapSqlParameterSource();
+            parameterSource.addValue("id", id);
+            namedParameterJdbcTemplate.update(sqlUpdate, parameterSource);
+        });
+        return result;
     }
 }

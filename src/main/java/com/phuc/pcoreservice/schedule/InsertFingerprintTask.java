@@ -34,7 +34,7 @@ public class InsertFingerprintTask implements Runnable {
         if (response.getStatusCode().value() == 200) {
             String path = FileCommon.createJsonFile(response.getBody(), "Desktop");
             FingerprintDTO fingerprintDTO = new FingerprintDTO();
-            fingerprintDTO.setPathFile(path);
+            fingerprintDTO.setFile(path);
             fingerprintDTO.setType(type);
             list.add(fingerprintDTO);
         }
