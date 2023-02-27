@@ -31,27 +31,9 @@ public class TaskController {
     @Autowired
     private ITaskService taskService;
 
-    @PostMapping(value = "/save-profile")
+    @PostMapping(value = "backup-profile")
     public ResponseEntity<?> saveProfile(@ModelAttribute ProfileRequest request){
         return profileService.saveProfile(request);
-    }
-
-    @GetMapping(value = "get-profile")
-    public ResponseEntity<?> getProfile(){
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return profileService.getProfile(request);
-    }
-
-
-    @GetMapping("/get-ip")
-    public ResponseEntity<?> getIpClient(){
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return ResponseEntity.ok().body(HttpUtils.getRequestIP(request));
-    }
-
-    @GetMapping(value = "change-status-running/{id}")
-    public ResponseEntity<?> changeStatusRunning(@PathVariable("id")Integer id){
-        return profileService.updateStatusRunning(id);
     }
 
     @GetMapping(value = "get-gmail-txt")

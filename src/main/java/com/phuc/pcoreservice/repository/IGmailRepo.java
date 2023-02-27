@@ -16,4 +16,6 @@ public interface IGmailRepo {
 
     Boolean importGmail(List<GmailModel> list);
 
+    Boolean changeStatusProfile(Integer gmailId, String urlFile);
+
 }

@@ -45,12 +45,13 @@ public class ProxyRepoImpl implements IProxyRepo {
     @Override
     public List<String> getListProxy(String ipAddress) {
         List<String> result = new ArrayList<>();
-        String sql = "SELECT proxy FROM tbl_proxy p inner join tbl_vps_info v on p.vps_use = v.id where ip_type = 2 and v.ip_address = :ip_address";
+        String sql = "SELECT p.id as id, proxy FROM tbl_proxy p inner join tbl_vps_info v on p.vps_use = v.id where ip_type = 2 and v.ip_address = :ip_address";
         ObjectMapper objectMapper = new ObjectMapper();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("ip_address", ipAddress);
         namedParameterJdbcTemplate.query(sql, parameterSource, rs -> {
             ProxyDTO proxyDTO = new ProxyDTO();
+            proxyDTO.setId(rs.getInt("id"));
             String proxy = rs.getString("proxy");
             String[] array = proxy.split(":");
             proxyDTO.setIp(array[0]+ ":"+ array[1]);

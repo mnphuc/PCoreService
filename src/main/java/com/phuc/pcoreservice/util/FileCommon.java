@@ -65,20 +65,8 @@ public class FileCommon {
     }
 
     public Resource getFileAsResource(String fileCode) throws IOException {
-        Path dirPath = Paths.get(DEFAULT_PATH);
-
-        Files.list(dirPath).forEach(file -> {
-            if (file.getFileName().toString().startsWith(fileCode)) {
-                foundFile = file;
-                return;
-            }
-        });
-
-        if (foundFile != null) {
-            return new UrlResource(foundFile.toUri());
-        }
-
-        return null;
+        Path dirPath = Paths.get(DEFAULT_PATH_PROFILE+"/"+fileCode+".zip");
+        return new UrlResource(dirPath.toUri());
     }
 
 }

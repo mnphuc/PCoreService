@@ -31,14 +31,14 @@ public class TaskRepoImpl implements ITaskRepo {
         Integer vpsId = keyHolder.getKey().intValue();
 
         MapSqlParameterSource parameterSourceGmail = new MapSqlParameterSource();
-        parameterSourceGmail.addValue("limit", taskConfigVPS.getTotalGmail());
+        parameterSourceGmail.addValue("limit", taskConfigVPS.getTotalData());
         parameterSourceGmail.addValue("vpsID", vpsId);
         String sqlUpdateGmail = "update tbl_gmail set status = 1, vps_use = :vpsID where vps_use is null limit :limit";
         int updateGmail = namedParameterJdbcTemplate.update(sqlUpdateGmail, parameterSourceGmail);
 
         MapSqlParameterSource parameterUpdateProxy = new MapSqlParameterSource();
         parameterUpdateProxy.addValue("vpsID", vpsId);
-        parameterUpdateProxy.addValue("limit", taskConfigVPS.getTotalProxy());
+        parameterUpdateProxy.addValue("limit", taskConfigVPS.getTotalData());
         String sqlUpdateProxy = "update tbl_proxy set vps_use = :vpsID where vps_use is null limit :limit";
         int statusUpdateGmail = namedParameterJdbcTemplate.update(sqlUpdateProxy, parameterUpdateProxy);
 

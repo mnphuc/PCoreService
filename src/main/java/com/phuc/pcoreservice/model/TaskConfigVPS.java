@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 public class TaskConfigVPS {
     private String ipVPS;
-    private Integer totalGmail;
-    private Integer totalProxy;
+    private Integer totalData;
     private List<Integer> listWebsite;
 }

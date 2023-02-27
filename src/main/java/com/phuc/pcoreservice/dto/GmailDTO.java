@@ -10,4 +10,6 @@ public class GmailDTO {
     private String password;
     @Property(name = "mail_recovery")
     private String mailRecovery;
+    private Boolean backupStatus;
+    private String fileProfile;
 }

@@ -1,6 +1,7 @@
 package com.phuc.pcoreservice.service.impl;
 
 import com.phuc.pcoreservice.dto.FingerprintDTO;
+import com.phuc.pcoreservice.repository.IGmailRepo;
 import com.phuc.pcoreservice.repository.IProfileRepo;
 import com.phuc.pcoreservice.payload.request.ProfileRequest;
 import com.phuc.pcoreservice.payload.response.ProfileTask;
@@ -25,14 +26,17 @@ public class ProfileServiceImpl implements IProfileService {
     @Autowired
     private IProfileRepo profileRepo;
 
+    @Autowired
+    private IGmailRepo gmailRepo;
+
     @Override
     public ResponseEntity<?> saveProfile(ProfileRequest request) {
-        FileCommon.saveFileProfile(request.getFile());
-        Boolean bl = profileRepo.saveProfileInfo(request);
+        String urlFile = FileCommon.saveFileProfile(request.getFile());
+        Boolean bl = gmailRepo.changeStatusProfile(request.getGmailId(), urlFile);
         if (bl){
-            return ResponseEntity.ok().body("Save profile success!");
+            return ResponseEntity.ok().body("Backup profile success!");
         }else{
-            return ResponseEntity.badRequest().body("Save profile false!");
+            return ResponseEntity.badRequest().body("Backup profile false!");
         }
 
     }

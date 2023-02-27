@@ -7,7 +7,7 @@ import com.phuc.pcoreservice.payload.response.ProfileTask;
 import java.util.List;
 
 public interface IProfileRepo {
-    boolean saveProfileInfo(ProfileRequest request);
+
     boolean saveFingerprint(String value, String type);
 
     ProfileTask getProfileTask(String ipAddress);

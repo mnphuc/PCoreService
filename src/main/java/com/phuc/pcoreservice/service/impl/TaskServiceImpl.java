@@ -18,8 +18,8 @@ public class TaskServiceImpl implements ITaskService {
     public ResponseEntity<?> configVPSRunning(ConfigRunningVPSRequest request) {
         TaskConfigVPS taskConfigVPS = new TaskConfigVPS();
         taskConfigVPS.setIpVPS(request.getIpAddress());
-        taskConfigVPS.setTotalGmail(request.getTotalGmail());
-        taskConfigVPS.setTotalProxy(request.getTotalProxy());
+        taskConfigVPS.setTotalData(request.getTotalData());
+
 
         Boolean bl = taskRepo.saveConfigVPS(taskConfigVPS);
 

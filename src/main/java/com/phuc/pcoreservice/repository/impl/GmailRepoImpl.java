@@ -66,7 +66,7 @@ public class GmailRepoImpl implements IGmailRepo {
     @Override
     public List<String> getListGmailByVps(String ipAddress) {
         List<String> result = new ArrayList<>();
-        String sql = "SELECT g.id, g.username, g.password, g.mail_recovery FROM tbl_gmail g inner join tbl_vps_info v on g.vps_use = v.id where v.ip_address = :ip_address and g.status = 1";
+        String sql = "SELECT g.id, g.username, g.password, g.mail_recovery, g.backup_status, g.file_profile FROM tbl_gmail g inner join tbl_vps_info v on g.vps_use = v.id where v.ip_address = :ip_address and g.status = 1";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("ip_address", ipAddress);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -76,6 +76,8 @@ public class GmailRepoImpl implements IGmailRepo {
             gmailDTO.setUsername(rs.getString("username"));
             gmailDTO.setPassword(rs.getString("password"));
             gmailDTO.setMailRecovery(rs.getString("mail_recovery"));
+            gmailDTO.setBackupStatus(rs.getBoolean("backup_status"));
+            gmailDTO.setFileProfile(rs.getString("file_profile"));
             try {
                 result.add(objectMapper.writeValueAsString(gmailDTO));
             } catch (JsonProcessingException e) {
@@ -100,6 +102,7 @@ public class GmailRepoImpl implements IGmailRepo {
                 sqlUpdate = "update tbl_gmail set login_count_fall = login_count_fall + 1, status = 2 where id = :id";
             }
             MapSqlParameterSource paramUpdate = new MapSqlParameterSource();
+            paramUpdate.addValue("id", gmailId);
             namedParameterJdbcTemplate.update(sqlUpdate, paramUpdate);
         });
         return true;
@@ -121,5 +124,15 @@ public class GmailRepoImpl implements IGmailRepo {
         SqlParameterSource[] sqlParameterSources = sourceList.toArray(new SqlParameterSource[0]);
         namedParameterJdbcTemplate.batchUpdate(sql, sqlParameterSources);
         return true;
+    }
+
+    @Override
+    public Boolean changeStatusProfile(Integer gmailId, String urlFile) {
+        String sql = "UPDATE tbl_gmail set backup_status = 1, file_profile = :url_file where id = :id";
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("url_file", urlFile);
+        parameterSource.addValue("id", gmailId);
+        int status = namedParameterJdbcTemplate.update(sql, parameterSource);
+        return status == 1;
     }
 }

@@ -9,9 +9,7 @@ public class ConfigRunningVPSRequest {
 
     private String ipAddress;
 
-    private Integer totalGmail;
-
-    private Integer totalProxy;
+    private Integer totalData;
 
     private List<Integer> websites;
 }
