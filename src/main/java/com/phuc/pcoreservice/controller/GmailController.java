@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("gmail")
+@RequestMapping("api/public/gmail")
 public class GmailController {
 
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping(value = "proxy")
+@RequestMapping(value = "api/public/proxy")
 public class ProxyController {
 
     @Autowired
