@@ -2,7 +2,7 @@ package com.phuc.pcoreservice.schedule;
 
 
 import com.phuc.pcoreservice.dto.FingerprintDTO;
-import com.phuc.pcoreservice.security.jwt.AuthTokenFilter;
+
 import com.phuc.pcoreservice.service.IProfileService;
 import com.phuc.pcoreservice.util.CommonUtil;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 @Component
 public class FingerprintTask {
-    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(FingerprintTask.class);
 
     @Value("${cron.task.path.request}")
     private Integer totalRequest;

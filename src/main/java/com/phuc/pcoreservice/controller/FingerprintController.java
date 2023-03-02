@@ -1,7 +1,5 @@
 package com.phuc.pcoreservice.controller;
 
-import com.phuc.pcoreservice.payload.request.FingerprintRequest;
-import com.phuc.pcoreservice.security.jwt.AuthEntryPointJwt;
 import com.phuc.pcoreservice.service.IProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "api/public/fingerprint")
 public class FingerprintController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+    private static final Logger logger = LoggerFactory.getLogger(FingerprintController.class);
 
     @Autowired
     private IProfileService profileService;
