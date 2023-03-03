@@ -68,9 +68,9 @@ public class GmailServiceImpl implements IGmailService {
                 if (StringUtils.isNotBlank(s)){
                     String[] gmailArray = s.split(",");
                     GmailModel gmailModel = new GmailModel();
-                    gmailModel.setUsername(gmailArray[0]);
-                    gmailModel.setPassword(gmailArray[1]);
-                    gmailModel.setMailRecovery(gmailArray[2]);
+                    gmailModel.setUsername(gmailArray[0].trim());
+                    gmailModel.setPassword(gmailArray[1].trim());
+                    gmailModel.setMailRecovery(gmailArray[2].trim());
                     gmailList.add(gmailModel);
                 }
             }

@@ -8,6 +8,7 @@ class PCoreServiceApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("asa \na".trim());
     }
 
 }

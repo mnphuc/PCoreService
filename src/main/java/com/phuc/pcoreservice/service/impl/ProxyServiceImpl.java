@@ -57,7 +57,7 @@ public class ProxyServiceImpl implements IProxyService {
             String[] arrayProxy = theString.split("\n");
             for (String s : arrayProxy) {
                 if (StringUtils.isNotBlank(s)){
-                    proxyList.add(new ProxyModel(s));
+                    proxyList.add(new ProxyModel(s.trim()));
                 }
             }
             proxyRepo.importProxy(proxyList);
