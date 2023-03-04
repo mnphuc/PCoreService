@@ -45,7 +45,7 @@ public class FingerprintTask {
 
         List<FingerprintDTO> list = new ArrayList<>();
         for (int i = 0; i < totalRequest; i++){
-            executor.execute(new InsertFingerprintTask(profileService, list, urlRequest, type));
+            executor.execute(new InsertFingerprintTask( list, urlRequest, type));
             Thread.sleep(5000);
         }
         executor.shutdown();
