@@ -19,8 +19,7 @@ public class InsertFingerprintTask implements Runnable {
     private String urlRequest;
     private String type;
 
-    public InsertFingerprintTask(IProfileService profileService, List<FingerprintDTO> list, String urlRequest, String type) {
-        this.profileService = profileService;
+    public InsertFingerprintTask(List<FingerprintDTO> list, String urlRequest, String type) {
         this.list = list;
         this.urlRequest = urlRequest;
         this.type = type;
