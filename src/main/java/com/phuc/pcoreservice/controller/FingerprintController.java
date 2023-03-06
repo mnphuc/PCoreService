@@ -19,11 +19,11 @@ public class FingerprintController {
 
 
 
-    @PostMapping(value = "save")
-    public ResponseEntity<?> saveFingerprint(@RequestBody String jsonFingerprint){
-        logger.info(jsonFingerprint);
-        return null;
-    }
+//    @PostMapping(value = "save")
+//    public ResponseEntity<?> saveFingerprint(@RequestBody String jsonFingerprint){
+//        logger.info(jsonFingerprint);
+//        return null;
+//    }
 
     @GetMapping(value = "get")
     public ResponseEntity<?> getFingerprint(){
