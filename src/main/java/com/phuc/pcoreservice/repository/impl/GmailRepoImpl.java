@@ -135,4 +135,12 @@ public class GmailRepoImpl implements IGmailRepo {
         int status = namedParameterJdbcTemplate.update(sql, parameterSource);
         return status == 1;
     }
+
+    @Override
+    public Long getGmailFree() {
+        String sql = "SELECT COUNT(id) from tbl_gmail tg where vps_use is null";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        Long value = namedParameterJdbcTemplate.queryForObject(sql,namedParameters, Long.class);
+        return value;
+    }
 }

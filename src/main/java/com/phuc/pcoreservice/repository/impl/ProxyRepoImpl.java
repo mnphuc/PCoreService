@@ -81,4 +81,12 @@ public class ProxyRepoImpl implements IProxyRepo {
         namedParameterJdbcTemplate.batchUpdate(sql, sqlParameterSources);
         return true;
     }
+
+    @Override
+    public Long getProxyFree() {
+        String sql = "SELECT COUNT(id) from tbl_proxy tp WHERE vps_use is null";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        Long value = namedParameterJdbcTemplate.queryForObject(sql,namedParameters, Long.class);
+        return value;
+    }
 }

@@ -92,4 +92,14 @@ public class ProfileRepoImpl implements IProfileRepo {
         });
         return result;
     }
+
+    @Override
+    public Long getFingerprintsFree() {
+
+        String sql = "SELECT COUNT(id)  FROM tbl_fingerprint tf WHERE status_use = :status";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("status", 0);
+        Long value = namedParameterJdbcTemplate.queryForObject(sql,namedParameters, Long.class);
+        return value;
+    }
 }

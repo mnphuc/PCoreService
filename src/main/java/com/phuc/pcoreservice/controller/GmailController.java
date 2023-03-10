@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("api/public/gmail")
 public class GmailController {
 
@@ -18,9 +19,8 @@ public class GmailController {
         return gmailService.importGmail(file);
     }
 
-    @GetMapping(value = "get-total-gmail-active")
+    @GetMapping(value = "get-total-free")
     public ResponseEntity<?> getTotalGmail(){
-        return null;
+        return gmailService.getGmailFree();
     }
-
 }

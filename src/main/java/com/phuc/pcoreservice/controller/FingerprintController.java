@@ -31,4 +31,8 @@ public class FingerprintController {
         return profileService.getFingerprint();
     }
 
+    @GetMapping(value = "get-total-free")
+    public ResponseEntity<?> getTotalFingerprintsFree(){
+        return profileService.getFingerprintsFree();
+    }
 }

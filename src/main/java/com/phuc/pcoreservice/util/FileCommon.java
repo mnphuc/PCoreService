@@ -2,6 +2,7 @@ package com.phuc.pcoreservice.util;
 
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,9 +23,9 @@ public class FileCommon {
 
     private Path foundFile;
 
-    public static final String  DEFAULT_PATH_PROFILE = "file/profile";
-    public static final String  DEFAULT_PATH = "file";
-    public static final String  DEFAULT_PATH_FINGERPRINT = "file/fingerprint";
+    public static final String DEFAULT_PATH_PROFILE = "file/profile";
+    public static final String DEFAULT_PATH = "file";
+    public static final String DEFAULT_PATH_FINGERPRINT = "file/fingerprint";
 
     public static String saveFileProfile(MultipartFile multipartFile) {
         String result = new String();
@@ -41,7 +42,7 @@ public class FileCommon {
     public static String createJsonFile(String json, String type){
         Long fileName = new Date().getTime();
         Path uploadPath = Paths.get(DEFAULT_PATH_FINGERPRINT);
-        File file = new File(uploadPath+ "/"+type+fileName+".json");
+        File file = new File(uploadPath + "/" + type + fileName + ".json");
 
         try {
             FileWriter writer = new FileWriter(file);
@@ -55,17 +56,13 @@ public class FileCommon {
         return file.getPath();
     }
 
-    public static Resource getFingerprintFile(String fileName){
+    public static FileSystemResource getFingerprintFile(String fileName) {
         Path dirPath = Paths.get(fileName);
-        try {
-            return new UrlResource(dirPath.toUri());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new FileSystemResource(dirPath.toString());
     }
 
     public Resource getFileAsResource(String fileCode) throws IOException {
-        Path dirPath = Paths.get(DEFAULT_PATH_PROFILE+"/"+fileCode+".zip");
+        Path dirPath = Paths.get(DEFAULT_PATH_PROFILE + "/" + fileCode + ".zip");
         return new UrlResource(dirPath.toUri());
     }
 

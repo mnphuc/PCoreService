@@ -14,8 +14,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.integration.ftp.gateway.FtpOutboundGateway;
 //import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
@@ -109,13 +112,31 @@ public class ProfileServiceImpl implements IProfileService {
     @Override
     public ResponseEntity<?> getFingerprint() {
         FingerprintDTO fingerprintDTO = profileRepo.getFingerprint();
-        Resource resource = FileCommon.getFingerprintFile(fingerprintDTO.getFile());
-        String jsonResult = null;
+        Path dirPath = Paths.get(fingerprintDTO.getFile());
+        Resource resource = new FileSystemResource(dirPath.toString());
+//        String jsonResult = null;
+//        try (InputStream inputStream = resource.getInputStream()){
+//            jsonResult = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fingerprints.json");
         try {
-            jsonResult = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.contentLength())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        return ResponseEntity.ok().body(jsonResult);
+        return ResponseEntity.badRequest().body("get fingerprint false");
+//        return ResponseEntity.ok().body(jsonResult);
+    }
+
+    @Override
+    public ResponseEntity<?> getFingerprintsFree() {
+        return ResponseEntity.ok().body(profileRepo.getFingerprintsFree());
     }
 }

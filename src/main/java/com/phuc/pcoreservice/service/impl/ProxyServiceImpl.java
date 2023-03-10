@@ -66,4 +66,9 @@ public class ProxyServiceImpl implements IProxyService {
         }
         return ResponseEntity.ok().body("Import thành công");
     }
+
+    @Override
+    public ResponseEntity<?> getProxyFree() {
+        return ResponseEntity.ok().body(proxyRepo.getProxyFree());
+    }
 }

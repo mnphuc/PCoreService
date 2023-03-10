@@ -18,4 +18,6 @@ public interface IProfileRepo {
 
     FingerprintDTO getFingerprint();
 
+    Long getFingerprintsFree();
+
 }

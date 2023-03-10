@@ -11,4 +11,6 @@ public interface IProxyRepo {
     List<String> getListProxy(String ipAddress);
 
     Boolean importProxy(List<ProxyModel> list);
+
+    Long getProxyFree();
 }

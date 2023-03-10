@@ -81,4 +81,9 @@ public class GmailServiceImpl implements IGmailService {
         return ResponseEntity.ok().body("Import thành công");
 
     }
+
+    @Override
+    public ResponseEntity<?> getGmailFree() {
+        return ResponseEntity.ok().body(gmailRepo.getGmailFree());
+    }
 }

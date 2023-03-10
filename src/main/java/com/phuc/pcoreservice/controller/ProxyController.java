@@ -21,4 +21,9 @@ public class ProxyController {
         return proxyService.importProxy(file);
     }
 
+    @GetMapping(value = "get-total-free")
+    public ResponseEntity<?> getProxyFree(){
+        return proxyService.getProxyFree();
+    }
+
 }

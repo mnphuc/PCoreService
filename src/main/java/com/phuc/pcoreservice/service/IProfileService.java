@@ -20,5 +20,7 @@ public interface IProfileService {
 
     ResponseEntity<?> getFingerprint();
 
+    ResponseEntity<?> getFingerprintsFree();
+
 
 }

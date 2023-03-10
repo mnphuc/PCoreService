@@ -18,4 +18,5 @@ public interface IGmailRepo {
 
     Boolean changeStatusProfile(Integer gmailId, String urlFile);
 
+    Long getGmailFree();
 }

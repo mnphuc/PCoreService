@@ -13,4 +13,6 @@ public interface IGmailService {
     ResponseEntity<?> updateStatusLogin(Integer gmailId);
 
     ResponseEntity<?> importGmail(MultipartFile file);
+
+    ResponseEntity<?> getGmailFree();
 }

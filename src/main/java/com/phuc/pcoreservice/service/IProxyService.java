@@ -10,4 +10,5 @@ public interface IProxyService {
 
     ResponseEntity<?> getStringProxyV6(HttpServletRequest request);
     ResponseEntity<?> importProxy(MultipartFile file);
+    ResponseEntity<?> getProxyFree();
 }
